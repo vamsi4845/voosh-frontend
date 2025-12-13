@@ -1,7 +1,14 @@
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
 import { Message } from '@/types';
-import { Copy, Sparkles, ThumbsDown, ThumbsUp } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 interface ChatAreaProps {
   messages: Message[];
@@ -16,10 +23,6 @@ function ChatArea({ messages, streamingText, isLoading }: ChatAreaProps) {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, streamingText]);
 
-  const handleCopy = (text: string) => {
-    navigator.clipboard.writeText(text);
-  };
-
   return (
     <div className="relative flex-1">
     <div
@@ -27,58 +30,53 @@ function ChatArea({ messages, streamingText, isLoading }: ChatAreaProps) {
     >
     <div className="flex-1 flex flex-col bg-[#0f0f0f] overflow-hidden max-w-4xl mx-auto">
       <div className="flex-1 overflow-y-auto p-6 space-y-6">
-        {messages.length === 0 && !streamingText && (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center text-gray-400">
-              <Sparkles className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p className="text-lg">Start a conversation</p>
-            </div>
-          </div>
-        )}
-
         {messages.map((message, index) => (
           <div
             key={index}
             className={cn(
-              "flex gap-4",
+              "flex gap-2",
               message.role === 'user' ? "justify-end" : "justify-start"
             )}
           >
-            {message.role === 'assistant' && (
-              <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-                <Sparkles className="w-4 h-4 text-white" />
-              </div>
-            )}
             <div
               className={cn(
-                "max-w-3xl rounded-2xl px-4 py-2",
+                "max-w-3xl rounded-2xl",
                 message.role === 'user'
-                  ? "bg-blue-600 text-white"
+                  ? "bg-blue-600 text-white px-4 py-2"
                   : "text-gray-100"
               )}
             >
               <div className="prose prose-invert max-w-none">
                 <div className="whitespace-pre-wrap">{message.content}</div>
                 {message.sources && message.sources.length > 0 && (
-                  <div className="mt-4 pt-4 border-t border-gray-700">
-                    <div className="text-xs font-semibold text-gray-400 mb-2">Sources:</div>
-                    <div className="space-y-1">
-                      {message.sources.map((source, idx) => (
-                        <a
-                          key={idx}
-                          href={source.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block text-xs text-blue-400 hover:text-blue-300 underline"
-                        >
-                          {source.title || 'Source'}
-                        </a>
-                      ))}
-                    </div>
+                  <div className="mt-4 pt-4">
+                    <Accordion type="single" collapsible className="w-full bg-[#212121] rounded-2xl p-4">
+                      <AccordionItem value="sources" className="border-none !text-xs !text-white">
+                        <AccordionTrigger className="py-0 hover:no-underline [&>svg]:hidden [&[data-state=open]_div_svg]:rotate-180">
+                              Sources: {message.sources.length} {message.sources.length === 1 ? 'source' : 'sources'}
+                        </AccordionTrigger>
+                        <AccordionContent className="pt-3 pb-0">
+                          <div className="space-y-2">
+                            {message.sources.map((source, idx) => (
+                              <Link
+                                key={idx}
+                                to={source.url || '/'}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs text-gray-300 hover:text-gray-100 transition-colors hover:underline group flex items-center gap-1"
+                              >
+                                {source.title || 'Source'}
+                                <ArrowUpRight  className="hidden group-hover:block w-3 h-3 text-gray-400 group-hover:text-gray-100 transition-colors" />
+                              </Link>
+                            ))}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
                   </div>
                 )}
               </div>
-              {message.role === 'assistant' && (
+              {/* {message.role === 'assistant' && (
                 <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-700">
                   <button
                     onClick={() => handleCopy(message.content)}
@@ -100,17 +98,14 @@ function ChatArea({ messages, streamingText, isLoading }: ChatAreaProps) {
                     <ThumbsDown className="w-4 h-4 text-gray-400" />
                   </button>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         ))}
 
         {streamingText && (
           <div className="flex gap-4 justify-start">
-            <div className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center flex-shrink-0">
-              <Sparkles className="w-4 h-4 text-gray-400" />
-            </div>
-            <div className="max-w-3xl rounded-2xl px-4 py-3 bg-gray-800 text-gray-100">
+            <div className="max-w-3xl rounded-2xl px-4 py-3 text-white">
               <div className="whitespace-pre-wrap">
                 {streamingText}
                 <span className="inline-block w-2 h-4 bg-gray-400 ml-1 animate-pulse">|</span>
@@ -120,17 +115,8 @@ function ChatArea({ messages, streamingText, isLoading }: ChatAreaProps) {
         )}
 
         {isLoading && !streamingText && (
-          <div className="flex gap-4 justify-start">
-            <div className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center flex-shrink-0">
-              <Sparkles className="w-4 h-4 text-gray-400 animate-pulse" />
-            </div>
-            <div className="max-w-3xl rounded-2xl px-4 py-3 bg-gray-800 text-gray-100">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
-              </div>
-            </div>
+          <div className="flex gap-2 justify-start items-center">
+              Thinking...
           </div>
         )}
 

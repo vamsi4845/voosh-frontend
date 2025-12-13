@@ -62,14 +62,6 @@ export function ChatPage() {
 
     const currentId = chatId || sessionId;
     socketSendMessage(text, currentId);
-    
-    setMessages((prev) => {
-      return [...prev, {
-        role: 'user' as const,
-        content: text,
-        timestamp: new Date().toISOString(),
-      }];
-    });
   };
 
   return (
