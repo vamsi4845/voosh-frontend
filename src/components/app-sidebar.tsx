@@ -68,7 +68,7 @@ export function AppSidebar({ onNewChat }: AppSidebarProps) {
             <div className="flex flex-row items-center justify-between">
               <div className="flex flex-row items-center gap-3">
                 <span className="cursor-pointer rounded-md px-2 font-semibold text-lg hover:bg-muted">
-                  Chatbot
+                  Newsly
                 </span>
               </div>
               <div className="flex flex-row gap-1">

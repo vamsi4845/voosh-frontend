@@ -6,9 +6,10 @@ import {
 } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
 import { Message } from '@/types';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, File, Files } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { Greeting } from './greeting';
 
 interface ChatAreaProps {
   messages: Message[];
@@ -28,19 +29,19 @@ function ChatArea({ messages, streamingText, isLoading }: ChatAreaProps) {
     <div
       className="absolute inset-0 touch-pan-y overflow-y-auto"
     >
-    <div className="flex-1 flex flex-col bg-[#0f0f0f] overflow-hidden max-w-4xl mx-auto">
+      {messages.length === 0 && <Greeting />}
+    <div className="flex-1 flex flex-col overflow-hidden max-w-4xl mx-auto">
       <div className="flex-1 overflow-y-auto p-6 space-y-6">
         {messages.map((message, index) => (
           <div
             key={index}
             className={cn(
-              "flex gap-2",
-              message.role === 'user' ? "justify-end" : "justify-start"
+              message.role === 'user' ? "flex justify-end" : ""
             )}
           >
             <div
               className={cn(
-                "max-w-3xl rounded-2xl",
+                "max-w-5xl rounded-2xl",
                 message.role === 'user'
                   ? "bg-blue-600 text-white px-4 py-2"
                   : "text-gray-100"
@@ -49,11 +50,14 @@ function ChatArea({ messages, streamingText, isLoading }: ChatAreaProps) {
               <div className="prose prose-invert max-w-none">
                 <div className="whitespace-pre-wrap">{message.content}</div>
                 {message.sources && message.sources.length > 0 && (
-                  <div className="mt-4 pt-4">
+                  <div className="mt-2">
                     <Accordion type="single" collapsible className="w-full bg-[#212121] rounded-2xl p-4">
                       <AccordionItem value="sources" className="border-none !text-xs !text-white">
-                        <AccordionTrigger className="py-0 hover:no-underline [&>svg]:hidden [&[data-state=open]_div_svg]:rotate-180">
-                              Sources: {message.sources.length} {message.sources.length === 1 ? 'source' : 'sources'}
+                        <AccordionTrigger className="py-0 hover:no-underline">
+                          <div className="flex items-center gap-1">
+                            <Files className="w-3 h-3 text-white/80" />
+                            <span className="text-sm text-white/80">Sources  <span className=" text-xs text-white/50"> {message.sources.length} {message.sources.length === 1 ? 'source' : 'sources'}</span></span>
+                          </div>
                         </AccordionTrigger>
                         <AccordionContent className="pt-3 pb-0">
                           <div className="space-y-2">

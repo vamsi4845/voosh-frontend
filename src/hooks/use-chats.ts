@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { clearSession } from '@/services/apiService';
 
 export interface Chat {
   id: string;
@@ -39,6 +40,12 @@ export function useDeleteChat() {
 
   return useMutation({
     mutationFn: async (chatId: string) => {
+      try {
+        await clearSession(chatId);
+      } catch (error) {
+        console.error('Failed to clear session on backend:', error);
+      }
+      
       const chats = getChatsFromStorage();
       const updatedChats = chats.filter((c) => c.id !== chatId);
       saveChatsToStorage(updatedChats);
@@ -48,7 +55,8 @@ export function useDeleteChat() {
       queryClient.setQueryData(['chats'], updatedChats);
       toast.success('Chat deleted successfully');
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Failed to delete chat:', error);
       toast.error('Failed to delete chat');
     },
   });
@@ -59,6 +67,16 @@ export function useDeleteAllChats() {
 
   return useMutation({
     mutationFn: async () => {
+      const chats = getChatsFromStorage();
+      
+      const clearPromises = chats.map((chat) =>
+        clearSession(chat.id).catch((error) => {
+          console.error(`Failed to clear session ${chat.id}:`, error);
+        })
+      );
+      
+      await Promise.allSettled(clearPromises);
+      
       saveChatsToStorage([]);
       return [];
     },
@@ -66,7 +84,8 @@ export function useDeleteAllChats() {
       queryClient.setQueryData(['chats'], []);
       toast.success('All chats deleted successfully');
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Failed to delete all chats:', error);
       toast.error('Failed to delete all chats');
     },
   });
