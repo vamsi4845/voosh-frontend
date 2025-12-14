@@ -1,10 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { GithubIcon, PlusIcon } from "@/components/icons";
 import { SidebarToggle } from "@/components/sidebar-toggle";
-import { Button } from "@/components/ui/button";
-import { useSidebar } from "@/components/ui/sidebar";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,13 +10,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Info } from "lucide-react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useWindowSize } from "usehooks-ts";
-import { Info } from "lucide-react";
 
 export function ChatHeader() {
   const navigate = useNavigate();
-  const { open } = useSidebar();
   const [showInfoDialog, setShowInfoDialog] = useState(false);
 
   const { width: windowWidth } = useWindowSize();
@@ -28,7 +26,7 @@ export function ChatHeader() {
     <>
       <header className="sticky top-0 flex items-center justify-between gap-2 bg-background px-2 py-1.5 md:px-2">
         <SidebarToggle />
-        {(!open || windowWidth < 768) && (
+        {(windowWidth < 768) && (
           <Button
             className="order-2 h-8 px-2  md:h-fit md:px-2"
             onClick={() => {
