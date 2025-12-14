@@ -6,7 +6,7 @@ import {
 } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
 import { Message } from '@/types';
-import { ArrowUpRight, File, Files } from 'lucide-react';
+import { ArrowUpRight, Files } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Greeting } from './greeting';
