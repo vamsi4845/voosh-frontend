@@ -50,7 +50,6 @@ npm install
 3. Create `.env` file in the root directory:
 ```env
 VITE_API_URL=http://localhost:3001
-VITE_SOCKET_URL=http://localhost:3001
 ```
 
 4. Start the development server:
