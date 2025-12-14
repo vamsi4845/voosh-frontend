@@ -32,13 +32,13 @@ A modern React frontend for a RAG-powered chatbot that answers questions over a 
 ## Prerequisites
 
 - Node.js 18+
-- Backend server running (see backend README)
+- Backend server running (see [backend README](https://github.com/vamsi4845/voosh-backend))
 
 ## Installation
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/vamsi4845/voosh-frontend
 cd voosh-frontend
 ```
 
@@ -239,7 +239,6 @@ Tailwind config (`tailwind.config.ts`) extends these variables for use in compon
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `VITE_API_URL` | Backend REST API URL | `http://localhost:3001` |
-| `VITE_SOCKET_URL` | Backend Socket.io URL | `http://localhost:3001` |
 
 ## Development
 
@@ -268,7 +267,6 @@ This runs TypeScript compiler to check for type errors.
 2. Run `vercel` in the project directory
 3. Set environment variables in Vercel dashboard:
    - `VITE_API_URL`
-   - `VITE_SOCKET_URL`
 4. Deploy
 
 ### Netlify
@@ -283,7 +281,6 @@ This runs TypeScript compiler to check for type errors.
 
 Set these in your hosting platform:
 - `VITE_API_URL` - Your backend API URL
-- `VITE_SOCKET_URL` - Your backend Socket.io URL
 
 **Note**: Make sure your backend CORS settings allow requests from your frontend domain.
 
@@ -345,13 +342,6 @@ When the bot responds, it includes source links to the news articles used. These
 - Verify PostCSS configuration
 - Restart dev server after config changes
 
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-
-## License
-
-ISC
+### Links
+- [Backend Repository](https://github.com/vamsi4845/voosh-backend)
+- [Live](https://voosh-newsly.vercel.app/)
