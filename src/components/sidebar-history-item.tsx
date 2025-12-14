@@ -39,7 +39,7 @@ const PureChatItem = ({ chat, isActive, onDelete }: ChatItemProps) => {
           state={{ from: location.pathname }}
         >
           <MessageSquare className="h-4 w-4" />
-          <span className="truncate">{chat.title}</span>
+          <span className="truncate max-w-[80%]">{chat.title}</span>
         </Link>
       </SidebarMenuButton>
 
