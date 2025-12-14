@@ -42,11 +42,6 @@ graph TD
             RedisClient_Msg[redisClient.ts]
         end
 
-        %% REST Flow
-        subgraph Rest_Flow [REST API Flow]
-            ChatRoute[routes/chat.ts]
-        end
-
         %% Shared Services
         RAG[ragService.ts]
         RedisClient_Cache[redisClient.ts]
@@ -64,13 +59,6 @@ graph TD
         SocketHandler -->|Save User Msg| RedisClient_Msg
         RedisClient_Msg -->|Persist History| Redis
         SocketHandler -->|Process Stream| RAG
-        
-        %% REST Interaction
-        Client -- "POST /api/chat" --> Server
-        Server --> ChatRoute
-        ChatRoute -->|Validate Session| SessionMgr
-        ChatRoute -->|Save User Msg| RedisClient_Msg
-        ChatRoute -->|Process Query| RAG
 
         %% RAG Logic
         RAG -->|Check Cache| RedisClient_Cache
@@ -92,9 +80,6 @@ graph TD
         
         RAG -- "Emit: chat:chunk / chat:sources" --> SocketHandler
         SocketHandler -- "Events to Client" --> Client
-        
-        RAG -- "Return JSON" --> ChatRoute
-        ChatRoute -- "JSON Response" --> Client
     end
     
     %% Styling
@@ -102,7 +87,7 @@ graph TD
     classDef database fill:#191919,stroke:#333,stroke-width:2px;
     classDef external fill:#191919,stroke:#333,stroke-width:2px;
     
-    class RAG,NewsIngest,EmbService_Ingest,EmbService_Chat,VecStore_Ingest,VecStore_Chat,GeminiService,SessionMgr,ChatRoute,SocketHandler service;
+    class RAG,NewsIngest,EmbService_Ingest,EmbService_Chat,VecStore_Ingest,VecStore_Chat,GeminiService,SessionMgr,SocketHandler service;
     class Redis,Qdrant,GoogleGemini,RedisClient_Msg,RedisClient_Cache,VecStore_Chat database;
     class Reuters external; 
 ```
@@ -316,7 +301,6 @@ Manages Socket.io connection:
 
 ### API Service
 REST API client for:
-- Sending messages (non-streaming fallback)
 - Fetching session history
 - Clearing sessions
 
