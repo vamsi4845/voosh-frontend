@@ -40,7 +40,9 @@ export function ChatPage() {
     if (chatId) {
       const chatExists = chats.some(c => c.id === chatId);
       if (!chatExists && chats.length > 0) {
-        navigate('/');
+        setSessionId(null);
+        setMessages([]);
+        localStorage.removeItem('chatSessionId');
         return;
       }
       setSessionId(chatId);
@@ -73,7 +75,7 @@ export function ChatPage() {
             streamingText={streamingText}
             isLoading={isLoading}
             />
-            <div className="sticky bottom-0 z-1 mx-auto flex w-full max-w-4xl gap-2 border-t-0 bg-background px-2 pb-3 md:px-4 md:pb-4">
+            <div className="sticky bottom-8 z-1 mx-auto flex w-full max-w-4xl gap-2 border-t-0 bg-background px-2 pb-3 md:px-4 md:pb-4">
               <ChatInput
                 onSend={handleSendMessage}
               />

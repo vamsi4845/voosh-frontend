@@ -98,7 +98,6 @@ voosh-frontend/
 │   │   │   ├── chat-area.tsx      # Chat message display area
 │   │   │   ├── chat-header.tsx     # Header with title and info
 │   │   │   ├── chat-input.tsx      # Message input component
-│   │   │   ├── chat-screen.tsx     # Main chat screen container
 │   │   │   ├── greeting.tsx        # Welcome greeting component
 │   │   │   └── message-preview.tsx # Message preview component
 │   │   ├── sidebar-history.tsx     # Chat history sidebar
@@ -127,7 +126,6 @@ voosh-frontend/
 │   │   └── utils.ts                # Utility functions (cn helper)
 │   ├── pages/
 │   │   ├── chat-page.tsx           # Chat page component
-│   │   └── home-page.tsx           # Home/welcome page
 │   ├── providers/
 │   │   └── query-provider.tsx      # React Query provider
 │   ├── services/

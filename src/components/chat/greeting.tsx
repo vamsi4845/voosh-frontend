@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 export const Greeting = () => {
   return (
     <div
-      className="mx-auto mt-4 flex max-w-3xl flex-col justify-center px-4 md:mt-24 md:px-8"
+      className="mx-auto mt-4 flex max-w-3xl flex-col justify-center px-4 md:mt-32 md:px-8"
       key="overview"
     >
       <motion.div
